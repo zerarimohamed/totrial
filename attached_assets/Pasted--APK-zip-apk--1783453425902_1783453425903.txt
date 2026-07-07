@@ -1,0 +1,44 @@
+# إصلاح مشكلة: ملف APK ينزل بصيغة .zip بدل .apk
+
+المشكلة: عند الضغط على زر تحميل التطبيق، الملف ينزل للمستخدم باسم Mizu.apk.zip بدل Mizu.apk. هذا يمنع المستخدم من تثبيت التطبيق مباشرة ويجبره يفك الضغط يدوياً.
+
+السبب: المتصفح (Chrome) يعتمد على الـ MIME Type اللي يرسله السيرفر مع الملف لتحديد الامتداد. إذا كان السيرفر ما يحدد Content-Type الصحيح، كروم يفترض إنه ملف مضغوط ويضيف .zip تلقائياً.
+
+المطلوب إصلاحه:
+
+1. إذا كان الملف مستضاف كـ Static file (مثلاً في مجلد public/):
+   - تأكد أن إعدادات السيرفر (Vercel/Express/إلخ) ترسل الملف بـ Header التالي بشكل صريح:
+    
+     Content-Type: application/vnd.android.package-archive
+     Content-Disposition: attachment; filename="Mizu.apk"
+     
+   - إذا كنت تستخدم Vercel، أضف ملف vercel.json (أو عدّله) بهذا الإعداد:
+    
+     {
+       "headers": [
+         {
+           "source": "/downloads/mizu.apk",
+           "headers": [
+             { "key": "Content-Type", "value": "application/vnd.android.package-archive" },
+             { "key": "Content-Disposition", "value": "attachment; filename=\"Mizu.apk\"" }
+           ]
+         }
+       ]
+     }
+     
+2. إذا كان التحميل يمر عبر مسار API (Route/Endpoint) بدل ملف ثابت:
+   - في الكود اللي يرجّع الملف (Node/Express مثلاً)، تأكد من ضبط الـ Headers يدوياً قبل إرسال الملف:
+    
+     app.get('/download/mizu', (req, res) => {
+       res.setHeader('Content-Type', 'application/vnd.android.package-archive');
+       res.setHeader('Content-Disposition', 'attachment; filename="Mizu.apk"');
+       res.sendFile(path.join(__dirname, 'public/downloads/mizu.apk'));
+     });
+     
+3. تأكد من اسم الملف نفسه على السيرفر:
+   - غيّر اسم الملف الفعلي المرفوع ليكون Mizu.apk فقط (بدون أي امتداد إضافي أو مسافات)، وتأكد إنه مو مضغوط أصلاً (يعني الملف نفسه APK حقيقي، مو ملف zip بداخله APK).
+
+4. اختبار نهائي:
+   - بعد التعديل، جرب التحميل من متصفح Chrome على هاتف أندرويد فعلي، وتأكد أن الملف ينزل مباشرة باسم Mizu.apk بدون أي امتداد .zip إضافي، ويفتح مباشرة لشاشة "هل تريد تثبيت هذا التطبيق؟" عند الضغط عليه من قائمة التنزيلات.
+
+لا تغيّر أي شيء آخر في تصميم أو بنية الموقع — هذا إصلاح تقني محدد فقط لآلية تقديم ملف الـ APK.

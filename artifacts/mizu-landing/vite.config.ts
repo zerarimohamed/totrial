@@ -27,9 +27,53 @@ if (!basePath) {
   );
 }
 
+function isApkRequest(url: string | undefined): boolean {
+  if (!url) return false;
+  try {
+    const { pathname } = new URL(url, 'http://localhost');
+    return pathname.toLowerCase().endsWith('.apk');
+  } catch {
+    return url.split('?')[0].toLowerCase().endsWith('.apk');
+  }
+}
+
+function setApkHeaders(res: import('http').ServerResponse) {
+  res.setHeader('Content-Type', 'application/vnd.android.package-archive');
+  res.setHeader('Content-Disposition', 'attachment; filename="Mizu.apk"');
+}
+
+const apkHeadersPlugin = {
+  name: 'apk-mime-headers',
+  configureServer(server: import('vite').ViteDevServer) {
+    server.middlewares.use(
+      (
+        req: import('http').IncomingMessage,
+        res: import('http').ServerResponse,
+        next: () => void,
+      ) => {
+        if (isApkRequest(req.url)) setApkHeaders(res);
+        next();
+      },
+    );
+  },
+  configurePreviewServer(server: import('vite').PreviewServer) {
+    server.middlewares.use(
+      (
+        req: import('http').IncomingMessage,
+        res: import('http').ServerResponse,
+        next: () => void,
+      ) => {
+        if (isApkRequest(req.url)) setApkHeaders(res);
+        next();
+      },
+    );
+  },
+};
+
 export default defineConfig({
   base: basePath,
   plugins: [
+    apkHeadersPlugin,
     react(),
     tailwindcss(),
     runtimeErrorOverlay(),
