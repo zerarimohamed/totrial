@@ -28,17 +28,42 @@ export default function Hero() {
           متوفر الآن في ولايات مختارة
         </motion.div>
 
-        <motion.h1 
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
-          className="text-5xl md:text-7xl font-black text-white leading-tight md:leading-tight max-w-4xl mb-6 tracking-tight"
-        >
-          مياه نقية حتى بابك، <br className="hidden md:block"/>
-          <span className="text-transparent bg-clip-text bg-gradient-to-l from-primary to-blue-300" style={{ filter: 'drop-shadow(0 0 20px rgba(14, 165, 233, 0.4))' }}>
-            بضغطة زر
+        <h1 className="text-5xl md:text-7xl font-black text-white leading-tight md:leading-tight max-w-4xl mb-6 tracking-tight">
+          {/* Line 1: مياه • نقية */}
+          <span className="flex items-center gap-4 md:gap-6 mb-1">
+            <motion.span
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+            >
+              مياه
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, ease: "easeOut", delay: 0.35 }}
+              className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-primary flex-shrink-0"
+              style={{ boxShadow: '0 0 10px rgba(14,165,233,0.8), 0 0 20px rgba(14,165,233,0.4)' }}
+            />
+            <motion.span
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.45 }}
+            >
+              نقية
+            </motion.span>
           </span>
-        </motion.h1>
+          {/* Line 2: بضغطة زر */}
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.65 }}
+            className="block text-transparent bg-clip-text bg-gradient-to-l from-primary to-blue-300"
+            style={{ filter: 'drop-shadow(0 0 20px rgba(14, 165, 233, 0.4))' }}
+          >
+            بضغطة زر
+          </motion.span>
+        </h1>
 
         <motion.p 
           initial={{ opacity: 0, y: 40 }}
