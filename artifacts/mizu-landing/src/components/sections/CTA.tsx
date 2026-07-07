@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { Download } from 'lucide-react';
-import { SiWhatsapp } from 'react-icons/si';
 import InstallGuide from './InstallGuide';
 
 export default function CTA() {
@@ -60,22 +59,6 @@ export default function CTA() {
           <InstallGuide />
         </motion.div>
 
-        {/* WhatsApp secondary */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="mt-6"
-        >
-          <a
-            href="#"
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-[#25D366]/10 border border-[#25D366]/30 text-[#25D366] hover:bg-[#25D366]/20 transition-all text-lg font-bold"
-          >
-            تواصل عبر واتساب
-            <SiWhatsapp className="w-5 h-5" />
-          </a>
-        </motion.div>
 
       </div>
     </section>

@@ -49,12 +49,12 @@ export default function Navbar() {
               ))}
             </ul>
             <div className="flex items-center gap-3 border-r border-white/10 pr-6">
-              <a href="#register-driver" className="px-5 py-2 rounded-full border border-white/20 text-white text-sm font-semibold hover:border-primary/50 hover:bg-primary/5 transition-all">
-                تسجيل كسائق
-              </a>
-              <a href="#register-customer" className="px-5 py-2 rounded-full bg-primary text-white text-sm font-semibold glow-primary glow-primary-hover transition-all">
-                تسجيل كعميل
-              </a>
+              <button
+                onClick={() => document.getElementById('footer')?.scrollIntoView({ behavior: 'smooth' })}
+                className="px-5 py-2 rounded-full bg-primary text-white text-sm font-semibold glow-primary glow-primary-hover transition-all"
+              >
+                تواصل معنا
+              </button>
             </div>
           </nav>
 
@@ -85,12 +85,15 @@ export default function Navbar() {
             ))}
           </ul>
           <div className="flex flex-col gap-3 pt-4 border-t border-white/10">
-            <a href="#register-driver" className="w-full text-center px-5 py-3 rounded-xl border border-white/20 text-white font-semibold" onClick={() => setMobileMenuOpen(false)}>
-              تسجيل كسائق
-            </a>
-            <a href="#register-customer" className="w-full text-center px-5 py-3 rounded-xl bg-primary text-white font-semibold glow-primary" onClick={() => setMobileMenuOpen(false)}>
-              تسجيل كعميل
-            </a>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                document.getElementById('footer')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="w-full text-center px-5 py-3 rounded-xl bg-primary text-white font-semibold glow-primary"
+            >
+              تواصل معنا
+            </button>
           </div>
         </div>
       )}
